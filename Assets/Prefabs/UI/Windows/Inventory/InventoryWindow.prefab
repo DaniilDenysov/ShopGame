@@ -248,7 +248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9177665237711257421, guid: d473238b20144b74aa9ce9f26983cf42, type: 3}
       propertyPath: m_Name
-      value: InventoryWindow Variant
+      value: InventoryWindow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
