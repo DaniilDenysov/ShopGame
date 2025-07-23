@@ -138,7 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6745730551822875827, guid: e11f3de264c80404abf67f527cc39ae3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00007262568
+      value: 0.00028161998
       objectReference: {fileID: 0}
     - target: {fileID: 7059783636156817720, guid: e11f3de264c80404abf67f527cc39ae3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -147,6 +147,10 @@ PrefabInstance:
     - target: {fileID: 7059783636156817720, guid: e11f3de264c80404abf67f527cc39ae3, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7360418400154820088, guid: e11f3de264c80404abf67f527cc39ae3, type: 3}
+      propertyPath: m_Size
+      value: 0.9986206
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -166,6 +170,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3361134969694919583, guid: d473238b20144b74aa9ce9f26983cf42, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2759122993869283996}
+    - target: {fileID: 3361134969694919583, guid: d473238b20144b74aa9ce9f26983cf42, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6409789431500155234, guid: d473238b20144b74aa9ce9f26983cf42, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -258,6 +270,11 @@ PrefabInstance:
       addedObject: {fileID: 2211689135434441487}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d473238b20144b74aa9ce9f26983cf42, type: 3}
+--- !u!1 &2759122993869283996 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9177665237711257421, guid: d473238b20144b74aa9ce9f26983cf42, type: 3}
+  m_PrefabInstance: {fileID: 6419813468933332433}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3174973037366419132 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8437502087073432429, guid: d473238b20144b74aa9ce9f26983cf42, type: 3}

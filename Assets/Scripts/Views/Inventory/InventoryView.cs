@@ -1,13 +1,16 @@
+using ShopGame.Managers;
 using ShopGame.Presenters.Inventory;
 using ShopGame.ScriptableObjects.Inventory;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace ShopGame.Views.Inventory
 {
-    public abstract class InventoryView<T> : MonoBehaviour where T : IInventoryPresenter
+    public abstract class InventoryView<T> : MonoBehaviour, IUIState where T : IInventoryPresenter
     {
+        [SerializeField] protected UITweener tweener;
         [SerializeField] protected Transform container;
         [SerializeField] protected InventoryItemView inventoryItemViewPrefab;
 
@@ -15,6 +18,16 @@ namespace ShopGame.Views.Inventory
 
         //in this case I prefer dictionary and manual update over event as it will speed up look-up time and thus will be more efficient
         protected Dictionary<InventoryItemSO, InventoryItemView> itemViews = new Dictionary<InventoryItemSO, InventoryItemView>();
+
+        protected InputStateManager inputStateManager;
+        protected UIStateManager stateManager;
+
+        [Inject]
+        private void Construct(UIStateManager stateManager, InputStateManager inputStateManager)
+        {
+            this.stateManager = stateManager;
+            this.inputStateManager = inputStateManager;
+        }
 
         public void Initialize(IReadOnlyDictionary<InventoryItemSO, uint> items)
         {
@@ -41,9 +54,31 @@ namespace ShopGame.Views.Inventory
             }
         }
 
+        public void Open()
+        {
+            stateManager.ChangeState(this);
+        }
+
+        public void Close()
+        {
+            stateManager.ExitState(this);
+        }
+
         public void OnItemUpdated(InventoryItemSO itemSO, uint amount = 1)
         {
             AddItem(itemSO,amount);
+        }
+
+        public virtual void OnEnter()
+        {
+            inputStateManager.ChangeState(new InventoryState());
+            tweener.SetActive(true);
+        }
+
+        public virtual void OnExit()
+        {
+            inputStateManager.ChangeState(new DefaultState());
+            tweener.SetActive(false);
         }
     }
 }

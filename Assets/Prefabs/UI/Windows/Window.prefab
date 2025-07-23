@@ -163,7 +163,6 @@ GameObject:
   - component: {fileID: 6409789431500155234}
   - component: {fileID: 1639247475298632681}
   - component: {fileID: 3566955870684521884}
-  - component: {fileID: 2973857530360345504}
   m_Layer: 5
   m_Name: Window
   m_TagString: Untagged
@@ -219,6 +218,7 @@ MonoBehaviour:
   paralelExecution: 0
   tweenStrategies:
   - rid: 4829027009972142082
+  - rid: 4829027014931382273
   canvasGroup: {fileID: 1639247475298632681}
   blockInteractionDuringTween: 1
   references:
@@ -231,27 +231,7 @@ MonoBehaviour:
         inverseIfReached: 0
         canvasGroup: {fileID: 1639247475298632681}
         data: {fileID: 11400000, guid: 4ac591202b44d1247b8023f00dbc1ab2, type: 2}
---- !u!114 &2973857530360345504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9177665237711257421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9dd77c380006994dafdfd414748cca2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  paralelExecution: 0
-  tweenStrategies:
-  - rid: 4829027009972142082
-  canvasGroup: {fileID: 1639247475298632681}
-  blockInteractionDuringTween: 1
-  references:
-    version: 2
-    RefIds:
-    - rid: 4829027009972142082
+    - rid: 4829027014931382273
       type: {class: FadeTweenStrategy, ns: ShopGame, asm: Assembly-CSharp}
       data:
         trigger: 4
@@ -460,10 +440,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 6805613513055710194, guid: 2257edede254b644a9ab8c490ceaf006, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2973857530360345504}
     - target: {fileID: 6805613513055710194, guid: 2257edede254b644a9ab8c490ceaf006, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2

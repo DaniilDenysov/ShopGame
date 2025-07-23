@@ -4,6 +4,15 @@ using UnityEngine;
 
 namespace ShopGame.ScriptableObjects.Inventory
 {
+    public enum Rarity
+    {
+        Common = 100,
+        Uncommon = 70,
+        Rare = 40,
+        Epic = 20,
+        Legendary = 10
+    }
+
     [CreateAssetMenu(fileName = "InventoryItemSO", menuName = "ShopGame/Inventory/InventoryItemSO")]
     public class InventoryItemSO : ScriptableObject
     {
@@ -31,6 +40,11 @@ namespace ShopGame.ScriptableObjects.Inventory
         public uint HungerPoints
         {
             get => hungerPoints;
+        }
+        [SerializeField] protected Rarity rarity = Rarity.Common;
+        public Rarity Rarity
+        {
+            get => rarity;
         }
     }
 }

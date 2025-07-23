@@ -19,9 +19,10 @@ namespace ShopGame.Views.Inventory
         public void Initialize(InventoryItemSO inventoryItemSO, uint amount = 1)
         {
             this.inventoryItemSO = inventoryItemSO;
-            if (quantityDisplay != null) quantityDisplay.text = $"x{amount}";
-            priceDisplay.text = $"{inventoryItemSO.Price}$";
             nameDisplay.text = $"{inventoryItemSO.Name}";
+            if (quantityDisplay != null) quantityDisplay.text = $"x{amount}";
+            else nameDisplay.text = $"{inventoryItemSO.Name} x{amount}";
+            priceDisplay.text = $"{inventoryItemSO.Price}$";
             icon.sprite = inventoryItemSO.Icon;
         }
 
@@ -30,9 +31,9 @@ namespace ShopGame.Views.Inventory
             inventoryItemSO = null;
         }
 
-        public void Purchase(uint amount)
+        public void Purchase(int amount)
         {
-            OnPurchased?.Invoke(inventoryItemSO, amount);
+            OnPurchased?.Invoke(inventoryItemSO, (uint)Mathf.Max(0, amount));
         }
     }
 }

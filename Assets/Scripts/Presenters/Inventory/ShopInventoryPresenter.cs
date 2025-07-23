@@ -7,6 +7,6 @@ namespace ShopGame.Presenters
 {
     public class ShopInventoryPresenter : InventoryPresenter<ShopInventoryPresenter>
     {
-
+        
     }
 }
