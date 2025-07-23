@@ -15,8 +15,8 @@ namespace ShopGame.Presenters.Inventory
 
     public abstract class InventoryPresenter<T> : MonoBehaviour, IInventoryPresenter where T : IInventoryPresenter
     {
-        private InventoryView<T> view;
-        [SerializeField] private InventoryModel model = new InventoryModel();
+        protected InventoryView<T> view;
+        [SerializeReference, SubclassSelector] protected InventoryModel model;
 
 
         [Inject]
@@ -24,17 +24,25 @@ namespace ShopGame.Presenters.Inventory
         {
             this.view = view;
             model.Initialize();
+        }
+
+        protected virtual void Start()
+        {
             view?.Initialize(model.InventoryItems);
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
-            model.OnItemUpdated += OnModelUpdated;
+            model.OnItemUpdated += OnItemAdded;
+            model.OnItemRemoved += OnItemRemoved;
+            view.OnItemPurchased += Remove;
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
-            model.OnItemUpdated -= OnModelUpdated;
+            model.OnItemUpdated -= OnItemAdded;
+            model.OnItemRemoved -= OnItemRemoved;
+            view.OnItemPurchased -= Remove;
         }
 
         public void Open()
@@ -47,15 +55,14 @@ namespace ShopGame.Presenters.Inventory
             view?.Close();
         }
 
-        private void OnModelUpdated(InventoryItemSO itemSO, uint amount = 1)
+        protected void OnItemRemoved(InventoryItemSO itemSO)
         {
-            view?.OnItemUpdated(itemSO, amount);
+            view?.RemoveItem(itemSO);
         }
 
-        public virtual void OnItemPurchased(InventoryItemSO inventoryItemSO, uint amount = 1)
+        protected void OnItemAdded(InventoryItemSO itemSO, uint amount = 1)
         {
-            //TODO: add validation for currency
-            Add(inventoryItemSO, amount);
+            view?.AddItem(itemSO, amount);
         }
 
         public void Add(InventoryItemSO inventoryItemSO, uint amount = 1)

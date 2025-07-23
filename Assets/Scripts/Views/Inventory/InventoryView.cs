@@ -11,9 +11,8 @@ namespace ShopGame.Views.Inventory
     public abstract class InventoryView<T> : MonoBehaviour, IUIState where T : IInventoryPresenter
     {
         [SerializeField] protected UITweener tweener;
-        [SerializeField] protected Transform container;
+        [SerializeField] protected RectTransform container;
         [SerializeField] protected InventoryItemView inventoryItemViewPrefab;
-
         public event Action<InventoryItemSO, uint> OnItemPurchased;
 
         //in this case I prefer dictionary and manual update over event as it will speed up look-up time and thus will be more efficient
@@ -38,7 +37,7 @@ namespace ShopGame.Views.Inventory
             }
         }
 
-        private void AddItem(InventoryItemSO itemSO, uint amount = 1)
+        public void AddItem(InventoryItemSO itemSO, uint amount = 1)
         {
             if (itemViews.TryGetValue(itemSO, out var itemView))
             {
@@ -46,11 +45,38 @@ namespace ShopGame.Views.Inventory
             }
             else
             {
-                //TODO: use pool instead
-                itemView = Instantiate(inventoryItemViewPrefab, container);
-                itemView.Initialize(itemSO, amount);
-                itemView.OnPurchased += OnItemPurchased;
-                itemViews.Add(itemSO, itemView);
+                EventBus<PoolRequest<InventoryItemView>>.Raise(new PoolRequest<InventoryItemView>()
+                {
+                    Prefab = inventoryItemViewPrefab,
+                    Parent = container,
+                    Callback = (itm) =>
+                    {
+                        itm.Initialize(itemSO, amount);
+                        itm.OnPurchased += PurchaseItem;
+                        itemViews.Add(itemSO, itm);
+                    }
+                });
+            }
+        }
+
+        private void PurchaseItem(InventoryItemSO itm, uint amount)
+        {
+            OnItemPurchased?.Invoke(itm, amount);
+        }
+
+        public void RemoveItem(InventoryItemSO itemSO)
+        {
+            if (itemViews.TryGetValue(itemSO, out var itemView))
+            {
+                EventBus<ReleaseRequest<InventoryItemView>>.Raise(new ReleaseRequest<InventoryItemView>()
+                {
+                    PoolObject = itemView,
+                    Callback = (itm) =>
+                    {
+                        itm.OnPurchased -= PurchaseItem;
+                        itemViews.Remove(itemSO);
+                    }
+                });
             }
         }
 
@@ -62,11 +88,6 @@ namespace ShopGame.Views.Inventory
         public void Close()
         {
             stateManager.ExitState(this);
-        }
-
-        public void OnItemUpdated(InventoryItemSO itemSO, uint amount = 1)
-        {
-            AddItem(itemSO,amount);
         }
 
         public virtual void OnEnter()

@@ -7,6 +7,6 @@ namespace ShopGame.Views.Inventory
 {
     public class PlayerInventoryView : InventoryView<PlayerInventoryPresenter>
     {
-
+       
     }
 }

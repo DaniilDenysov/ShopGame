@@ -26,13 +26,9 @@ namespace ShopGame.Views.Inventory
             icon.sprite = inventoryItemSO.Icon;
         }
 
-        private void OnDisable()
-        {
-            inventoryItemSO = null;
-        }
-
         public void Purchase(int amount)
         {
+            if (inventoryItemSO == null) return;
             OnPurchased?.Invoke(inventoryItemSO, (uint)Mathf.Max(0, amount));
         }
     }

@@ -1,3 +1,4 @@
+using ShopGame.Views.Inventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace ShopGame.ScriptableObjects.Inventory
         {
             get => itemIcon;
         }
-        [SerializeField] protected string itemDescription;
+        [SerializeField, TextArea] protected string itemDescription;
         public string Description
         {
             get => itemDescription;

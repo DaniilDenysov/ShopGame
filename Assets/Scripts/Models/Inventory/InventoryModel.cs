@@ -1,4 +1,5 @@
 using ShopGame.ScriptableObjects.Inventory;
+using ShopGame.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,24 +14,12 @@ namespace ShopGame.Models.Inventory
     }
 
     [System.Serializable]
-    public class InventoryModel
+    public class VendingMachineInventoryModel : InventoryModel
     {
-        public event Action<InventoryItemSO, uint> OnItemUpdated;
+        [SerializeField] protected bool randomizeContents;
+        [SerializeField, Range(2, 1000)] protected int itemLimit = 8;
 
-        [SerializeField] private bool randomizeContents;
-        [SerializeField, Range(2, 1000)] private int itemLimit = 8;
-
-        [SerializeField] private InventoryItemDTO[] inventoryItemDTOs;
-        
-        private Dictionary<InventoryItemSO, uint> inventoryItems = new Dictionary<InventoryItemSO, uint>();
-
-        public IReadOnlyDictionary<InventoryItemSO, uint> InventoryItems
-        {
-            get => inventoryItems;
-        }
-
-        //TODO: encapsulate to separate models, add absruction
-        public void Initialize()
+        public override void Initialize()
         {
             inventoryItems.Clear();
             List<InventoryItemDTO> dtos = new List<InventoryItemDTO>();
@@ -69,6 +58,48 @@ namespace ShopGame.Models.Inventory
                 {
                     inventoryItems[item.InventoryItemSO] += item.Amount;
                 }
+                else
+                {
+                    DebugUtility.PrintLine($"Added {item.InventoryItemSO}");
+                }
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class PlayerInventoryModel : InventoryModel
+    {
+ 
+    }
+
+    [System.Serializable]
+    public abstract class InventoryModel
+    {
+        public event Action<InventoryItemSO, uint> OnItemUpdated;
+        public event Action<InventoryItemSO> OnItemRemoved;
+
+        [SerializeField] protected InventoryItemDTO[] inventoryItemDTOs;
+        
+        protected Dictionary<InventoryItemSO, uint> inventoryItems = new Dictionary<InventoryItemSO, uint>();
+
+        public IReadOnlyDictionary<InventoryItemSO, uint> InventoryItems
+        {
+            get => inventoryItems;
+        }
+
+        public virtual void Initialize()
+        {
+            inventoryItems.Clear();
+            foreach (var item in inventoryItemDTOs)
+            {
+                if (!inventoryItems.TryAdd(item.InventoryItemSO, item.Amount))
+                {
+                    inventoryItems[item.InventoryItemSO] += item.Amount;
+                }
+                else
+                {
+                    DebugUtility.PrintLine($"Added {item.InventoryItemSO}");
+                }
             }
         }
 
@@ -79,16 +110,26 @@ namespace ShopGame.Models.Inventory
             {
                 inventoryItems[inventoryItemSO] += amount;
             }
-            OnItemUpdated?.Invoke(inventoryItemSO, amount);
+            OnItemUpdated?.Invoke(inventoryItemSO, inventoryItems[inventoryItemSO]);
         }
 
         public void Remove(InventoryItemSO inventoryItemSO, uint amount = 1)
         {
-            if (amount == 0) return;
-            uint newAmount = (uint)Mathf.Max(0, inventoryItems[inventoryItemSO] - amount);
-            if (newAmount > 0) inventoryItems[inventoryItemSO] = newAmount;
-            else inventoryItems.Remove(inventoryItemSO);
-            OnItemUpdated?.Invoke(inventoryItemSO,amount);
+            if (amount == 0 || !inventoryItems.TryGetValue(inventoryItemSO, out uint currentAmount))
+                return;
+
+            uint newAmount = (uint)Mathf.Max(0, currentAmount - amount);
+            DebugUtility.PrintLine($"{newAmount}");
+            if (newAmount > 0)
+            {
+                inventoryItems[inventoryItemSO] = newAmount;
+                OnItemUpdated?.Invoke(inventoryItemSO, newAmount);
+            }
+            else
+            {
+                inventoryItems.Remove(inventoryItemSO);
+                OnItemRemoved?.Invoke(inventoryItemSO);
+            }
         }
     }
 }
