@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 namespace ShopGame.EventChannel.View
@@ -10,9 +11,19 @@ namespace ShopGame.EventChannel.View
         [SerializeField] private TMP_Text integetDisplay;
         [SerializeField] private string preffix, suffix;
 
+        private void Start()
+        {
+            UpdateView(eventChannel.Value);
+        }
+
         protected override void OnEventChannelUpdate(int arg)
         {
-            integetDisplay.text = $"{preffix}{arg}{suffix}";
+            UpdateView(arg);
+        }
+
+        private void UpdateView(int amount)
+        {
+            integetDisplay.text = $"{preffix}{amount}{suffix}";
         }
     }
 }

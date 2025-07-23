@@ -1,3 +1,4 @@
+using ShopGame.EventChannel.ModelPresenter;
 using ShopGame.Presenters.Inventory;
 using ShopGame.ScriptableObjects.Inventory;
 using ShopGame.Utilities;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
+using Zenject.SpaceFighter;
 
 namespace ShopGame.Presenters
 {
@@ -16,10 +18,15 @@ namespace ShopGame.Presenters
         public uint Amount;
     }
 
+    public struct  OnFoodConsumed : IEvent
+    {
+        public InventoryItemSO ItemSO;
+        public uint Amount;
+    }
+
     public class PlayerInventoryPresenter : InventoryPresenter<PlayerInventoryPresenter>
     {
         private EventBinding<OnSuccessfulPurchase> purchaseBinding;
-
         private PlayerInputActions inputActions;
 
         [Inject]
@@ -33,7 +40,9 @@ namespace ShopGame.Presenters
             purchaseBinding = new EventBinding<OnSuccessfulPurchase>(OnSuccesfullyPurchased);
             EventBus<OnSuccessfulPurchase>.Register(purchaseBinding);
             inputActions.Player.Invetory.performed += OnInventoryOpened;
-            base.OnEnable();
+            model.OnItemUpdated += OnItemAdded;
+            model.OnItemRemoved += OnItemRemoved;
+            view.OnItemPurchased += OnPurchase;
         }
 
         private void OnInventoryOpened(InputAction.CallbackContext context)
@@ -41,11 +50,24 @@ namespace ShopGame.Presenters
             view?.Open();
         }
 
+        private void OnPurchase(InventoryItemSO itemSO, uint amount)
+        {
+            if (amount == 0) return;
+            EventBus<OnFoodConsumed>.Raise(new OnFoodConsumed()
+            {
+                ItemSO = itemSO,
+                Amount = amount
+            });
+            Remove(itemSO, amount);
+        }
+
         protected override void OnDisable()
         {
             EventBus<OnSuccessfulPurchase>.Deregister(purchaseBinding);
             inputActions.Player.Invetory.performed -= OnInventoryOpened;
-            base.OnDisable();
+            model.OnItemUpdated -= OnItemAdded;
+            model.OnItemRemoved -= OnItemRemoved;
+            view.OnItemPurchased -= OnPurchase;
         }
 
         private void OnSuccesfullyPurchased(OnSuccessfulPurchase @event)

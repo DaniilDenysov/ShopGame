@@ -1,5 +1,7 @@
 using ShopGame.Interactables;
+using ShopGame.Pickables;
 using ShopGame.Presenters;
+using ShopGame.ScriptableObjects.Inventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +10,7 @@ using Zenject;
 
 namespace ShopGame.Interactables
 {
-    public class Money : Interactable
+    public class Money : Interactable, IPickable
     {
         private PlayerInputActions inputActions;
 
@@ -33,6 +35,13 @@ namespace ShopGame.Interactables
         {
             base.OnInteractEnd();
             inputActions.Player.Interaction.performed -= OnPlayerPressedInteraction;
+        }
+
+        public bool TryPickUp(out (InventoryItemSO, uint) item)
+        {
+            item = default;
+
+            return true;
         }
     }
 }

@@ -9,24 +9,18 @@ namespace ShopGame.Views.Inventory
     public class InventoryItemView : MonoBehaviour
     {
         public event Action<InventoryItemSO, uint> OnPurchased;
+        [SerializeField] protected TMP_Text nameDisplay;
+        [SerializeField] protected Image icon;
+        protected InventoryItemSO inventoryItemSO;
 
-        [SerializeField] private TMP_Text quantityDisplay;
-        [SerializeField] private TMP_Text priceDisplay;
-        [SerializeField] private TMP_Text nameDisplay;
-        [SerializeField] private Image icon;
-        private InventoryItemSO inventoryItemSO;
-
-        public void Initialize(InventoryItemSO inventoryItemSO, uint amount = 1)
+        public virtual void Initialize(InventoryItemSO inventoryItemSO, uint amount = 1)
         {
             this.inventoryItemSO = inventoryItemSO;
             nameDisplay.text = $"{inventoryItemSO.Name}";
-            if (quantityDisplay != null) quantityDisplay.text = $"x{amount}";
-            else nameDisplay.text = $"{inventoryItemSO.Name} x{amount}";
-            priceDisplay.text = $"{inventoryItemSO.Price}$";
             icon.sprite = inventoryItemSO.Icon;
         }
 
-        public void Purchase(int amount)
+        public virtual void Purchase(int amount)
         {
             if (inventoryItemSO == null) return;
             OnPurchased?.Invoke(inventoryItemSO, (uint)Mathf.Max(0, amount));

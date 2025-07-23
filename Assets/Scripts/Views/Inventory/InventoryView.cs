@@ -30,7 +30,6 @@ namespace ShopGame.Views.Inventory
 
         public void Initialize(IReadOnlyDictionary<InventoryItemSO, uint> items)
         {
-            itemViews.Clear();
             foreach (var item in items)
             {
                 AddItem(item.Key, item.Value);

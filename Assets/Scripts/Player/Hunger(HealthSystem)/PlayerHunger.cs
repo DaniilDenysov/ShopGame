@@ -1,3 +1,5 @@
+using ShopGame.Presenters;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +21,25 @@ namespace ShopGame.Player.Hunger
         [SerializeField] private float maxHunger;
         [SerializeField, TooltipAttribute("Points per minute")] private float hungerSpeed = 25f;
 
+        private EventBinding<OnFoodConsumed> eventBinding;
+        private void OnEnable()
+        {
+            eventBinding = new EventBinding<OnFoodConsumed>(Eat);
+            EventBus<OnFoodConsumed>.Register(eventBinding);
+        }
+
+        private void Eat(OnFoodConsumed consumed)
+        {
+            if (consumed.Amount == 0) return;
+            currentHunger += consumed.ItemSO.HungerPoints * consumed.Amount;
+        }
+
+        private void OnDisable()
+        {
+            EventBus<OnFoodConsumed>.Deregister(eventBinding);
+        }
+
+
         private IEnumerator Start()
         {
             currentHunger = maxHunger;
@@ -29,12 +50,6 @@ namespace ShopGame.Player.Hunger
                 currentHunger = Mathf.Max(0, currentHunger - hungerPerSecond * Time.deltaTime);
                 yield return null;
             }
-        }
-
-        public void Eat(float amount)
-        {
-            if (amount < 0) return;
-            currentHunger -= amount;
         }
     }
 }

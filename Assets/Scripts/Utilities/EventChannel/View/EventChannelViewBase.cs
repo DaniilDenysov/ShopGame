@@ -8,7 +8,7 @@ namespace ShopGame.EventChannel.View
 {
     public abstract class EventChannelViewBase<T> : MonoBehaviour
     {
-        [SerializeField] private EventChannel<T> eventChannel;
+        [SerializeField] protected EventChannel<T> eventChannel;
 
         protected void OnEnable()
         {

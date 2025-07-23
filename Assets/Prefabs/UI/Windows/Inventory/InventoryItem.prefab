@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 1668168154244328490}
   - component: {fileID: 2263605276591416699}
   - component: {fileID: 2406286752755955235}
+  - component: {fileID: 6389563618522998815}
   m_Layer: 5
   m_Name: InventoryItem
   m_TagString: Untagged
@@ -116,7 +117,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6573813584618748190
 CanvasRenderer:
@@ -158,8 +159,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 6335275e12d017844bf046503e157fbc, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -180,10 +181,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43544db8022c9d846bb0c93c16d95d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quantityDisplay: {fileID: 0}
-  priceDisplay: {fileID: 1033538268438995472}
   nameDisplay: {fileID: 7569991231087013949}
   icon: {fileID: 7395744330355985436}
+--- !u!114 &6389563618522998815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8848547194935422790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1001 &489152644983772322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -274,7 +286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6561570254377608531, guid: 5d78c78d5fce2614e81e4605ae8d8fa1, type: 3}
       propertyPath: m_text
-      value: Purchase
+      value: Eat
       objectReference: {fileID: 0}
     - target: {fileID: 7322351085610968303, guid: 5d78c78d5fce2614e81e4605ae8d8fa1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -588,17 +600,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
---- !u!114 &1033538268438995472 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
-  m_PrefabInstance: {fileID: 8640519714626481137}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &3503617104018027236 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5149325041722726677, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}

@@ -1,3 +1,4 @@
+using ShopGame.Pickables;
 using ShopGame.Views.Inventory;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,6 +42,11 @@ namespace ShopGame.ScriptableObjects.Inventory
         public uint HungerPoints
         {
             get => hungerPoints;
+        }
+        [SerializeField] protected Pickable pickablePrefab;
+        public Pickable PickablePrefab
+        {
+            get => pickablePrefab;
         }
         [SerializeField] protected Rarity rarity = Rarity.Common;
         public Rarity Rarity

@@ -26,11 +26,6 @@ namespace ShopGame.Presenters.Inventory
             model.Initialize();
         }
 
-        protected virtual void Start()
-        {
-            view?.Initialize(model.InventoryItems);
-        }
-
         protected virtual void OnEnable()
         {
             model.OnItemUpdated += OnItemAdded;
@@ -47,6 +42,7 @@ namespace ShopGame.Presenters.Inventory
 
         public void Open()
         {
+            view?.Initialize(model.InventoryItems);
             view?.Open();
         }
 
