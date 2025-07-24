@@ -45,11 +45,5 @@ namespace ShopGame.UIScreens
         {
             stateManager.ExitState(this);
         }
-
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            inputStateManager.ChangeState(this);
-        }
     }
 }

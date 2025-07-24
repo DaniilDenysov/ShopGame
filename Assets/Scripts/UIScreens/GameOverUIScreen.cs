@@ -4,10 +4,12 @@ using UnityEngine;
 
 namespace ShopGame.UIScreens
 {
-    public class GameOverUIScreen : GameStateUIScreen
+    public class GameOverUIScreen : UIScreen
     {
         public override void Enter()
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             InputActions.Player.Disable();
         }
 

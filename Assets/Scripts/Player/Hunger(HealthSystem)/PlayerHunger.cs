@@ -7,9 +7,15 @@ using UnityEngine.UI;
 
 namespace ShopGame.Player.Hunger
 {
+    public struct OnPlayerDied : IEvent
+    {
+
+    }
+
     public class PlayerHunger : MonoBehaviour
     {
         [SerializeField] private Slider hunger;
+        public int MovementMultiplier = 1;
         private float currentHunger
         {
             get => hunger.value;
@@ -47,7 +53,12 @@ namespace ShopGame.Player.Hunger
             float hungerPerSecond = hungerSpeed / 60f;
             while (true)
             {
-                currentHunger = Mathf.Max(0, currentHunger - hungerPerSecond * Time.deltaTime);
+                currentHunger = Mathf.Max(0, currentHunger - (MovementMultiplier * (hungerPerSecond * Time.deltaTime)));
+                if (currentHunger == 0)
+                {
+                    EventBus<OnPlayerDied>.Raise(new OnPlayerDied());
+                    break;
+                }
                 yield return null;
             }
         }

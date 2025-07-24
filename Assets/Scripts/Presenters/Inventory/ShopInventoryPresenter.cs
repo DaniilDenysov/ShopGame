@@ -1,6 +1,7 @@
 using ShopGame.EventChannel.ModelPresenter;
 using ShopGame.Presenters.Inventory;
 using ShopGame.ScriptableObjects.Inventory;
+using ShopGame.Utilities;
 using UnityEngine;
 
 namespace ShopGame.Presenters
@@ -24,6 +25,7 @@ namespace ShopGame.Presenters
 
         private void OnPurchase(InventoryItemSO itemSO, uint amount)
         {
+            DebugUtility.PrintLine("Processing purchase!");
             if (amount == 0) return;
             uint totalPrice = itemSO.Price * amount;
             if (wallet.Value - totalPrice < 0)

@@ -6,8 +6,6 @@ namespace ShopGame.UIScreens
 {
     public class HUDScreen : UIScreen
     {
-    
-
         public override void Enter()
         {
             InputActions.Player.Enable();
@@ -26,15 +24,9 @@ namespace ShopGame.UIScreens
         }
 
 
-        private void Start()
+        private void Awake()
         {
             stateManager.ChangeState(this);
-        }
-
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            inputStateManager.ChangeState(this);
         }
     }
 }

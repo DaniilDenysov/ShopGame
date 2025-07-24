@@ -25,10 +25,10 @@ namespace ShopGame.Presenters.Inventory
             this.model = model;
         }
 
-        private void Awake()
+        private void Start()
         {
             model.Initialize();
-            view?.Initialize(model.InventoryItems);
+            view.Initialize(model.InventoryItems);
         }
 
         protected virtual void OnEnable()
@@ -45,7 +45,7 @@ namespace ShopGame.Presenters.Inventory
 
         protected void OnItemUpdated(T itemSO, uint amount = 1)
         {
-            view?.UpdateItem(itemSO, amount);
+            view.UpdateItem(itemSO, amount);
         }
 
         public void Add(T inventoryItemSO, uint amount = 1)

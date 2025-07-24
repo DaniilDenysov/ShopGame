@@ -26,14 +26,13 @@ namespace ShopGame.UIScreens
 
         public virtual void OnEnter()
         {
+            inputStateManager.ChangeState(this);
             screenTweener.SetActive(true);
-            DebugUtility.PrintLine($"true");
         }
 
         public virtual void OnExit()
         {
             screenTweener.SetActive(false);
-            DebugUtility.PrintLine($"false");
         }
     }
 }

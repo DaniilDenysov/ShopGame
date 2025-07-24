@@ -15,6 +15,8 @@ namespace ShopGame.Views.Inventory
     public class InventoryItemView : MonoBehaviour, IInventoryItemView<InventoryItemSO>
     {
         public event Action<InventoryItemSO, uint> OnValueChanged;
+
+        [SerializeField] protected TMP_Text quantityDisplay;
         [SerializeField] protected TMP_Text nameDisplay;
         [SerializeField] protected Image icon;
         protected InventoryItemSO inventoryItemSO;
@@ -23,6 +25,7 @@ namespace ShopGame.Views.Inventory
         {
             this.inventoryItemSO = inventoryItemSO;
             nameDisplay.text = $"{inventoryItemSO.Name}";
+            quantityDisplay.text = $"{amount}";
             icon.sprite = inventoryItemSO.Icon;
         }
 

@@ -1,3 +1,4 @@
+using ShopGame.EventChannel.ModelPresenter;
 using ShopGame.Interactables;
 using ShopGame.Pickables;
 using ShopGame.Presenters;
@@ -10,9 +11,11 @@ using Zenject;
 
 namespace ShopGame.Interactables
 {
-    public class Money : Interactable, IPickable
+    public class Money : Interactable
     {
+        [SerializeField] private int amount;
         private PlayerInputActions inputActions;
+        [SerializeField] private EventChannel<int> wallet; 
 
         [Inject]
         private void Construct(PlayerInputActions inputActions)
@@ -28,20 +31,15 @@ namespace ShopGame.Interactables
 
         private void OnPlayerPressedInteraction(InputAction.CallbackContext context)
         {
-            
+            wallet.Value += amount;
+            gameObject.SetActive(false);
+            OnInteractEnd();
         }
 
         public override void OnInteractEnd()
         {
             base.OnInteractEnd();
             inputActions.Player.Interaction.performed -= OnPlayerPressedInteraction;
-        }
-
-        public bool TryPickUp(out (InventoryItemSO, uint) item)
-        {
-            item = default;
-
-            return true;
         }
     }
 }

@@ -9,19 +9,15 @@ namespace ShopGame.Utilities
         [SerializeField] private float timeEstimation = 120f;
         private Clock clock;
 
-        private float currentTime;
-
         private void Awake()
         {
             clock = new Clock(OnTimeChanged, TimerStoppedCallback, TimerElapsedCallback);
             clock.Start(timeEstimation);
-            currentTime = clock.CurrentTime;
         }
 
         private void FixedUpdate()
         {
             clock?.Tick(Time.fixedDeltaTime);
-            currentTime = clock?.CurrentTime ?? 0;
         }
 
         private void OnTimeChanged(float newTime)

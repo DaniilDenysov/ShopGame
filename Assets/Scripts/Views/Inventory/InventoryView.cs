@@ -2,6 +2,7 @@ using ShopGame.Managers;
 using ShopGame.Presenters.Inventory;
 using ShopGame.ScriptableObjects.Inventory;
 using ShopGame.UIScreens;
+using ShopGame.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +33,7 @@ namespace ShopGame.Views.Inventory
             foreach (var item in items)
             {
                 UpdateItem(item.Key, item.Value);
+                DebugUtility.PrintLine("Updated");
             }
         }
 
@@ -63,9 +65,16 @@ namespace ShopGame.Views.Inventory
                         Parent = container,
                         Callback = (itm) =>
                         {
-                            itm.Initialize(itemSO, amount);
-                            if (itm is IInventoryItemView<T>) ((IInventoryItemView<T>)itm).OnValueChanged += PurchaseItem;
-                            itemViews.Add(itemSO, itm);
+                            if (itm.TryGetComponent(out IInventoryItemView<T> item))
+                            {
+                                if (itm.TryGetComponent(out RectTransform rectTransform))
+                                {
+                                    rectTransform.localScale = Vector3.one;
+                                }
+                                item.Initialize(itemSO, amount);
+                                item.OnValueChanged += PurchaseItem;
+                                itemViews.Add(itemSO, itm);
+                            }
                         }
                     });
                 }
@@ -79,8 +88,12 @@ namespace ShopGame.Views.Inventory
                         PoolObject = itemView,
                         Callback = (itm) =>
                         {
-                            if (itm is IInventoryItemView<T>) ((IInventoryItemView<T>)itm).OnValueChanged += PurchaseItem;
-                            itemViews.Remove(itemSO);
+                            if (itm.TryGetComponent(out IInventoryItemView<T> item))
+                            {
+
+                                item.OnValueChanged -= PurchaseItem;
+                                itemViews.Remove(itemSO);
+                            }
                         }
                     });
                 }
@@ -90,6 +103,7 @@ namespace ShopGame.Views.Inventory
 
         private void PurchaseItem(T itm, uint amount)
         {
+            DebugUtility.PrintLine("Changed amount!");
             OnItemAmountChanged?.Invoke(itm, amount);
         }
 
@@ -101,12 +115,6 @@ namespace ShopGame.Views.Inventory
         public void Close()
         {
             stateManager.ExitState(this);
-        }
-
-        public override void OnEnter()
-        {
-            inputStateManager.ChangeState(this);
-            base.OnEnter();
         }
     }
 }

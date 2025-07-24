@@ -1,3 +1,4 @@
+using ShopGame.Player.Hunger;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ namespace ShopGame.Player.Movement
     {
         [SerializeField, Range(1f, 10000f)] private float movementSpeed = 5f;
         [SerializeField, Range(1f, 10000f)] private float jumpForce = 5f;
+        [SerializeField] private PlayerHunger playerHunger;
 
         private CharacterController controller;
         private PlayerInputActions inputActions;
@@ -39,6 +41,7 @@ namespace ShopGame.Player.Movement
         {
             if (controller.isGrounded)
             {
+                playerHunger.MovementMultiplier = 3;
                 jumpRequested = true;
             }
         }
@@ -64,6 +67,7 @@ namespace ShopGame.Player.Movement
             if (isGrounded && jumpRequested)
             {
                 verticalVelocity = jumpForce;
+                playerHunger.MovementMultiplier = 1;
                 jumpRequested = false;
             }
 
@@ -71,7 +75,14 @@ namespace ShopGame.Player.Movement
             {
                 verticalVelocity += Physics.gravity.y * Time.deltaTime;
             }
-
+            if (!jumpRequested && move.magnitude > 0)
+            {
+                playerHunger.MovementMultiplier = 2;
+            }
+            else
+            {
+                playerHunger.MovementMultiplier = 1;
+            }
             move.y = verticalVelocity;
             controller.Move(move * Time.deltaTime);
             wasGrounded = isGrounded;
