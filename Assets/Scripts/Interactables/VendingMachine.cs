@@ -1,5 +1,6 @@
 using ShopGame.Managers;
 using ShopGame.Presenters;
+using ShopGame.Views.Inventory;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,7 +12,7 @@ namespace ShopGame.Interactables
     public class VendingMachine : Interactable
     {
         private PlayerInputActions inputActions;
-        [SerializeField] private ShopInventoryPresenter inventoryPresenter;
+        [SerializeField] private ShopInventoryView inventoryView;
 
         [Inject]
         private void Construct(PlayerInputActions inputActions)
@@ -27,7 +28,7 @@ namespace ShopGame.Interactables
 
         private void OnPlayerPressedInteraction(InputAction.CallbackContext context)
         {
-            inventoryPresenter.Open();
+            inventoryView.Open();
         }
 
         public override void OnInteractEnd()

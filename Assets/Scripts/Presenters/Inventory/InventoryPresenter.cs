@@ -7,66 +7,53 @@ using Zenject;
 
 namespace ShopGame.Presenters.Inventory
 {
-    public interface IInventoryPresenter
+    public interface IInventoryPresenter<T> where T : InventoryItemSO
     {
-        public void Add(InventoryItemSO inventoryItemSO, uint amount = 1);
-        public void Remove(InventoryItemSO inventoryItemSO, uint amount = 1);
+        public void Add(T inventoryItemSO, uint amount = 1);
+        public void Remove(T inventoryItemSO, uint amount = 1);
     }
 
-    public abstract class InventoryPresenter<T> : MonoBehaviour, IInventoryPresenter where T : IInventoryPresenter
+    public abstract class InventoryPresenter<T> : MonoBehaviour, IInventoryPresenter<T> where T :InventoryItemSO
     {
-        protected InventoryView<T> view;
-        [SerializeReference, SubclassSelector] protected InventoryModel model;
-
+        protected IInventoryView<T> view;
+        protected IInventoryModel<T> model;
 
         [Inject]
-        private void Construct(InventoryView<T> view)
+        private void Construct(IInventoryView<T> view, IInventoryModel<T> model)
         {
             this.view = view;
+            this.model = model;
+        }
+
+        private void Awake()
+        {
             model.Initialize();
+            view?.Initialize(model.InventoryItems);
         }
 
         protected virtual void OnEnable()
         {
-            model.OnItemUpdated += OnItemAdded;
-            model.OnItemRemoved += OnItemRemoved;
-            view.OnItemPurchased += Remove;
+            model.OnItemUpdated += OnItemUpdated;
+            view.OnItemAmountChanged += Remove;
         }
 
         protected virtual void OnDisable()
         {
-            model.OnItemUpdated -= OnItemAdded;
-            model.OnItemRemoved -= OnItemRemoved;
-            view.OnItemPurchased -= Remove;
+            model.OnItemUpdated -= OnItemUpdated;
+            view.OnItemAmountChanged -= Remove;
         }
 
-        public void Open()
+        protected void OnItemUpdated(T itemSO, uint amount = 1)
         {
-            view?.Initialize(model.InventoryItems);
-            view?.Open();
+            view?.UpdateItem(itemSO, amount);
         }
 
-        public void Close()
-        {
-            view?.Close();
-        }
-
-        protected void OnItemRemoved(InventoryItemSO itemSO)
-        {
-            view?.RemoveItem(itemSO);
-        }
-
-        protected void OnItemAdded(InventoryItemSO itemSO, uint amount = 1)
-        {
-            view?.AddItem(itemSO, amount);
-        }
-
-        public void Add(InventoryItemSO inventoryItemSO, uint amount = 1)
+        public void Add(T inventoryItemSO, uint amount = 1)
         {
             model.Add(inventoryItemSO,amount);
         }
 
-        public void Remove(InventoryItemSO inventoryItemSO, uint amount = 1)
+        public void Remove(T inventoryItemSO, uint amount = 1)
         {
             model.Remove(inventoryItemSO, amount);
         }

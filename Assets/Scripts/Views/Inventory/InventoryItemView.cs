@@ -6,9 +6,15 @@ using UnityEngine.UI;
 
 namespace ShopGame.Views.Inventory
 {
-    public class InventoryItemView : MonoBehaviour
+    public interface IInventoryItemView<T> where T : InventoryItemSO
     {
-        public event Action<InventoryItemSO, uint> OnPurchased;
+        public event Action<T, uint> OnValueChanged;
+        public void Initialize(T inventoryItemSO, uint amount = 1);
+    }
+
+    public class InventoryItemView : MonoBehaviour, IInventoryItemView<InventoryItemSO>
+    {
+        public event Action<InventoryItemSO, uint> OnValueChanged;
         [SerializeField] protected TMP_Text nameDisplay;
         [SerializeField] protected Image icon;
         protected InventoryItemSO inventoryItemSO;
@@ -23,7 +29,7 @@ namespace ShopGame.Views.Inventory
         public virtual void Purchase(int amount)
         {
             if (inventoryItemSO == null) return;
-            OnPurchased?.Invoke(inventoryItemSO, (uint)Mathf.Max(0, amount));
+            OnValueChanged?.Invoke(inventoryItemSO, (uint)Mathf.Max(0, amount));
         }
     }
 }

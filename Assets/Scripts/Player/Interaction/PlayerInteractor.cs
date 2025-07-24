@@ -21,7 +21,7 @@ namespace ShopGame.Player.Interactions
     [System.Serializable]
     public class PickUpInteractionOverrideStrategy : InteractionOverrideStrategy
     {
-        [SerializeField] private InventoryPresenter<PlayerInventoryPresenter> playerInventory;
+        [SerializeField] private PlayerInventoryPresenter playerInventory;
 
         private PlayerInputActions inputActions;
         private Interactable interactable;

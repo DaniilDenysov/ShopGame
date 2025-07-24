@@ -14,11 +14,11 @@ namespace ShopGame.Models.Inventory
     }
 
     [System.Serializable]
-    public class VendingMachineInventoryModel : InventoryModel
+    public class VendingMachineInventoryModel : InventoryModel<InventoryItemSO>
     {
         [SerializeField] protected bool randomizeContents;
         [SerializeField, Range(2, 1000)] protected int itemLimit = 8;
-
+        [SerializeField] protected InventoryItemDTO[] inventoryItemDTOs;
         public override void Initialize()
         {
             inventoryItems.Clear();
@@ -67,27 +67,11 @@ namespace ShopGame.Models.Inventory
     }
 
     [System.Serializable]
-    public class PlayerInventoryModel : InventoryModel
+    public class PlayerInventoryModel : InventoryModel<InventoryItemSO>
     {
- 
-    }
-
-    [System.Serializable]
-    public abstract class InventoryModel
-    {
-        public event Action<InventoryItemSO, uint> OnItemUpdated;
-        public event Action<InventoryItemSO> OnItemRemoved;
-
         [SerializeField] protected InventoryItemDTO[] inventoryItemDTOs;
-        
-        protected Dictionary<InventoryItemSO, uint> inventoryItems = new Dictionary<InventoryItemSO, uint>();
 
-        public IReadOnlyDictionary<InventoryItemSO, uint> InventoryItems
-        {
-            get => inventoryItems;
-        }
-
-        public virtual void Initialize()
+        public override void Initialize()
         {
             inventoryItems.Clear();
             foreach (var item in inventoryItemDTOs)
@@ -102,8 +86,31 @@ namespace ShopGame.Models.Inventory
                 }
             }
         }
+    }
 
-        public void Add(InventoryItemSO inventoryItemSO, uint amount = 1)
+    public interface IInventoryModel<T> where T : InventoryItemSO
+    {
+        public event Action<T, uint> OnItemUpdated;
+        public IReadOnlyDictionary<T, uint> InventoryItems {  get; }
+        public void Initialize();
+        public void Add(T item, uint amount = 1);
+        public void Remove(T item, uint amount = 1);
+    }
+
+    [System.Serializable]
+    public abstract class InventoryModel<T> : IInventoryModel<T> where T : InventoryItemSO
+    {
+        public event Action<T, uint> OnItemUpdated;
+        protected Dictionary<T, uint> inventoryItems = new Dictionary<T, uint>();
+
+        public IReadOnlyDictionary<T, uint> InventoryItems
+        {
+            get => inventoryItems;
+        }
+
+        public abstract void Initialize();
+
+        public virtual void Add(T inventoryItemSO, uint amount = 1)
         {
             if (amount == 0) return; 
             if (!inventoryItems.TryAdd(inventoryItemSO,amount))
@@ -113,7 +120,7 @@ namespace ShopGame.Models.Inventory
             OnItemUpdated?.Invoke(inventoryItemSO, inventoryItems[inventoryItemSO]);
         }
 
-        public void Remove(InventoryItemSO inventoryItemSO, uint amount = 1)
+        public virtual void Remove(T inventoryItemSO, uint amount = 1)
         {
             if (amount == 0 || !inventoryItems.TryGetValue(inventoryItemSO, out uint currentAmount))
                 return;
@@ -125,11 +132,7 @@ namespace ShopGame.Models.Inventory
                 inventoryItems[inventoryItemSO] = newAmount;
                 OnItemUpdated?.Invoke(inventoryItemSO, newAmount);
             }
-            else
-            {
-                inventoryItems.Remove(inventoryItemSO);
-                OnItemRemoved?.Invoke(inventoryItemSO);
-            }
+            OnItemUpdated?.Invoke(inventoryItemSO, newAmount);
         }
     }
 }

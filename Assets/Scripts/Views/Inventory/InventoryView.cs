@@ -8,18 +8,27 @@ using Zenject;
 
 namespace ShopGame.Views.Inventory
 {
-    public abstract class InventoryView<T> : MonoBehaviour, IUIState where T : IInventoryPresenter
+    public interface IInventoryView<T> where T : InventoryItemSO
+    {
+        public event Action<T, uint> OnItemAmountChanged;
+        public void Initialize(IReadOnlyDictionary<T, uint> items);
+        public void UpdateItem(T item, uint  newAmount);
+        public void Open();
+        public void Close();
+    }
+
+    public abstract class InventoryView<T> : MonoBehaviour, IInventoryView<T>, IUIState where T : InventoryItemSO
     {
         [SerializeField] protected UITweener tweener;
         [SerializeField] protected RectTransform container;
         [SerializeField] protected InventoryItemView inventoryItemViewPrefab;
-        public event Action<InventoryItemSO, uint> OnItemPurchased;
+        public event Action<T, uint> OnItemAmountChanged;
 
         //in this case I prefer dictionary and manual update over event as it will speed up look-up time and thus will be more efficient
-        protected Dictionary<InventoryItemSO, InventoryItemView> itemViews = new Dictionary<InventoryItemSO, InventoryItemView>();
-
+        protected Dictionary<T, InventoryItemView> itemViews = new Dictionary<T, InventoryItemView>();
         protected InputStateManager inputStateManager;
         protected UIStateManager stateManager;
+
 
         [Inject]
         private void Construct(UIStateManager stateManager, InputStateManager inputStateManager)
@@ -28,55 +37,58 @@ namespace ShopGame.Views.Inventory
             this.inputStateManager = inputStateManager;
         }
 
-        public void Initialize(IReadOnlyDictionary<InventoryItemSO, uint> items)
+        public virtual void Initialize(IReadOnlyDictionary<T, uint> items)
         {
             foreach (var item in items)
             {
-                AddItem(item.Key, item.Value);
+                UpdateItem(item.Key, item.Value);
             }
         }
 
-        public void AddItem(InventoryItemSO itemSO, uint amount = 1)
+        public virtual void UpdateItem(T itemSO, uint amount)
         {
-            if (itemViews.TryGetValue(itemSO, out var itemView))
+            if (amount > 0)
             {
-                itemView.Initialize(itemSO, amount);
+                if (itemViews.TryGetValue(itemSO, out var itemView))
+                {
+                    itemView.Initialize(itemSO, amount);
+                }
+                else
+                {
+                    EventBus<PoolRequest<InventoryItemView>>.Raise(new PoolRequest<InventoryItemView>()
+                    {
+                        Prefab = inventoryItemViewPrefab,
+                        Parent = container,
+                        Callback = (itm) =>
+                        {
+                            itm.Initialize(itemSO, amount);
+                            if (itm is IInventoryItemView<T>) ((IInventoryItemView<T>)itm).OnValueChanged += PurchaseItem;
+                            itemViews.Add(itemSO, itm);
+                        }
+                    });
+                }
             }
             else
             {
-                EventBus<PoolRequest<InventoryItemView>>.Raise(new PoolRequest<InventoryItemView>()
+                if (itemViews.TryGetValue(itemSO, out var itemView))
                 {
-                    Prefab = inventoryItemViewPrefab,
-                    Parent = container,
-                    Callback = (itm) =>
+                    EventBus<ReleaseRequest<InventoryItemView>>.Raise(new ReleaseRequest<InventoryItemView>()
                     {
-                        itm.Initialize(itemSO, amount);
-                        itm.OnPurchased += PurchaseItem;
-                        itemViews.Add(itemSO, itm);
-                    }
-                });
+                        PoolObject = itemView,
+                        Callback = (itm) =>
+                        {
+                            if (itm is IInventoryItemView<T>) ((IInventoryItemView<T>)itm).OnValueChanged += PurchaseItem;
+                            itemViews.Remove(itemSO);
+                        }
+                    });
+                }
             }
+
         }
 
-        private void PurchaseItem(InventoryItemSO itm, uint amount)
+        private void PurchaseItem(T itm, uint amount)
         {
-            OnItemPurchased?.Invoke(itm, amount);
-        }
-
-        public void RemoveItem(InventoryItemSO itemSO)
-        {
-            if (itemViews.TryGetValue(itemSO, out var itemView))
-            {
-                EventBus<ReleaseRequest<InventoryItemView>>.Raise(new ReleaseRequest<InventoryItemView>()
-                {
-                    PoolObject = itemView,
-                    Callback = (itm) =>
-                    {
-                        itm.OnPurchased -= PurchaseItem;
-                        itemViews.Remove(itemSO);
-                    }
-                });
-            }
+            OnItemAmountChanged?.Invoke(itm, amount);
         }
 
         public void Open()

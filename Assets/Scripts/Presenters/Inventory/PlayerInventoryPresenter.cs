@@ -24,7 +24,7 @@ namespace ShopGame.Presenters
         public uint Amount;
     }
 
-    public class PlayerInventoryPresenter : InventoryPresenter<PlayerInventoryPresenter>
+    public class PlayerInventoryPresenter : InventoryPresenter<InventoryItemSO>
     {
         private EventBinding<OnSuccessfulPurchase> purchaseBinding;
         private PlayerInputActions inputActions;
@@ -40,9 +40,8 @@ namespace ShopGame.Presenters
             purchaseBinding = new EventBinding<OnSuccessfulPurchase>(OnSuccesfullyPurchased);
             EventBus<OnSuccessfulPurchase>.Register(purchaseBinding);
             inputActions.Player.Invetory.performed += OnInventoryOpened;
-            model.OnItemUpdated += OnItemAdded;
-            model.OnItemRemoved += OnItemRemoved;
-            view.OnItemPurchased += OnPurchase;
+            model.OnItemUpdated += OnItemUpdated;
+            view.OnItemAmountChanged += OnPurchase;
         }
 
         private void OnInventoryOpened(InputAction.CallbackContext context)
@@ -65,9 +64,8 @@ namespace ShopGame.Presenters
         {
             EventBus<OnSuccessfulPurchase>.Deregister(purchaseBinding);
             inputActions.Player.Invetory.performed -= OnInventoryOpened;
-            model.OnItemUpdated -= OnItemAdded;
-            model.OnItemRemoved -= OnItemRemoved;
-            view.OnItemPurchased -= OnPurchase;
+            model.OnItemUpdated += OnItemUpdated;
+            view.OnItemAmountChanged += OnPurchase;
         }
 
         private void OnSuccesfullyPurchased(OnSuccessfulPurchase @event)
