@@ -248,6 +248,10 @@ PrefabInstance:
       propertyPath: clockDisplay
       value: 
       objectReference: {fileID: 1134739950504586249}
+    - target: {fileID: 746317152188620174, guid: 6cf5f076c386aab408c1f2fffd17957e, type: 3}
+      propertyPath: timeEstimation
+      value: 1440
+      objectReference: {fileID: 0}
     - target: {fileID: 1469682135490533532, guid: 6cf5f076c386aab408c1f2fffd17957e, type: 3}
       propertyPath: m_Name
       value: GamePlayUI
@@ -939,6 +943,10 @@ PrefabInstance:
     - target: {fileID: 3201166561150255890, guid: 50ad7dc525577c844b638a09228dce7c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4298005868898589567, guid: 50ad7dc525577c844b638a09228dce7c, type: 3}
+      propertyPath: maxHunger
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6534794950444764207, guid: 50ad7dc525577c844b638a09228dce7c, type: 3}
       propertyPath: m_AnchorMax.y
