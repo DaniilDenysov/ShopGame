@@ -1,7 +1,6 @@
 using ShopGame.Utilities;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ShopGame.Managers
 {
@@ -17,7 +16,7 @@ namespace ShopGame.Managers
 
         public InputStateManager()
         {
-            ChangeState(new DefaultState());
+           
         }
 
         public void ChangeState(IPlayerInputState playerInputState)
@@ -37,39 +36,5 @@ namespace ShopGame.Managers
         public PlayerInputActions InputActions { get; set; }
         void Enter();
         void Exit();
-    }
-
-    public class DefaultState : IPlayerInputState
-    {
-        public PlayerInputActions InputActions { get; set; }
-
-        public void Enter()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            InputActions.Player.Enable();
-        }
-        public void Exit()
-        {
-            InputActions.Player.Disable();
-        }
-
-    }
-
-    public class InventoryState : IPlayerInputState
-    {
-        public PlayerInputActions InputActions { get; set; }
-
-        public void Enter()
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            InputActions.Player.Disable();
-        }
-        public void Exit()
-        {
-            InputActions.Player.Enable();
-
-        }
     }
 }

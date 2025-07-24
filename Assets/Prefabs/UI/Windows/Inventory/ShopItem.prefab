@@ -344,6 +344,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 6454201795834966409, guid: 580a4957096dcb84988ae5e540280a6d, type: 2}
+    - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
@@ -487,6 +491,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 6454201795834966409, guid: 580a4957096dcb84988ae5e540280a6d, type: 2}
+    - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
@@ -550,6 +558,10 @@ PrefabInstance:
     - target: {fileID: 616301376964017387, guid: 5d78c78d5fce2614e81e4605ae8d8fa1, type: 3}
       propertyPath: m_Color.r
       value: 0.039849162
+      objectReference: {fileID: 0}
+    - target: {fileID: 2043302087442640886, guid: 5d78c78d5fce2614e81e4605ae8d8fa1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2709158954644896976, guid: 5d78c78d5fce2614e81e4605ae8d8fa1, type: 3}
       propertyPath: m_Pivot.x
@@ -793,6 +805,10 @@ PrefabInstance:
       propertyPath: m_text
       value: Name
       objectReference: {fileID: 0}
+    - target: {fileID: 6859875260421568558, guid: 1018713448331a4498ef69214c592926, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -6620121175528869925, guid: 1da5cff34e521b24ab4bf49d31b4c24f, type: 2}
     - target: {fileID: 6859875260421568558, guid: 1018713448331a4498ef69214c592926, type: 3}
       propertyPath: m_VerticalAlignment
       value: 512

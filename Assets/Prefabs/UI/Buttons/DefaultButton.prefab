@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 6237335163997226855}
   - component: {fileID: 616301376964017387}
   - component: {fileID: 7322351085610968303}
+  - component: {fileID: 2043302087442640886}
+  - component: {fileID: 5112987129162891999}
   m_Layer: 5
   m_Name: DefaultButton
   m_TagString: Untagged
@@ -60,14 +62,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.19215688, g: 0.19215688, b: 0.19215688, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 6335275e12d017844bf046503e157fbc, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -96,7 +98,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -121,6 +123,69 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2043302087442640886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7553294947021011757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9dd77c380006994dafdfd414748cca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paralelExecution: 0
+  tweenStrategies:
+  - rid: 4829027031245914114
+  - rid: 4829027031245914115
+  - rid: 4829027031245914116
+  - rid: 4829027031245914117
+  canvasGroup: {fileID: 5112987129162891999}
+  blockInteractionDuringTween: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 4829027031245914114
+      type: {class: ScaleTweenStrategy, ns: ShopGame, asm: Assembly-CSharp}
+      data:
+        trigger: 5
+        inverseIfReached: 0
+        data: {fileID: 11400000, guid: a596678b093728843b709cf7c806522d, type: 2}
+        targetTransform: {fileID: 2709158954644896976}
+    - rid: 4829027031245914115
+      type: {class: ScaleTweenStrategy, ns: ShopGame, asm: Assembly-CSharp}
+      data:
+        trigger: 5
+        inverseIfReached: 0
+        data: {fileID: 11400000, guid: 72dc7ceb997e2a241acbd67ed40bc72d, type: 2}
+        targetTransform: {fileID: 2709158954644896976}
+    - rid: 4829027031245914116
+      type: {class: ScaleTweenStrategy, ns: ShopGame, asm: Assembly-CSharp}
+      data:
+        trigger: 6
+        inverseIfReached: 0
+        data: {fileID: 11400000, guid: 49644d3b8b3ff3a47a47de271c2f51f6, type: 2}
+        targetTransform: {fileID: 2709158954644896976}
+    - rid: 4829027031245914117
+      type: {class: ScaleTweenStrategy, ns: ShopGame, asm: Assembly-CSharp}
+      data:
+        trigger: 7
+        inverseIfReached: 0
+        data: {fileID: 11400000, guid: 76d27c348e29821428823a344949d981, type: 2}
+        targetTransform: {fileID: 2709158954644896976}
+--- !u!225 &5112987129162891999
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7553294947021011757}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &2500049831074229426
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -215,19 +280,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
       propertyPath: m_fontColor.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
       propertyPath: m_fontColor.g
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
       propertyPath: m_fontColor.r
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 6454201795834966409, guid: 580a4957096dcb84988ae5e540280a6d, type: 2}
+    - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4278190080
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
       propertyPath: m_VerticalAlignment
@@ -236,6 +305,10 @@ PrefabInstance:
     - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772615643821640161, guid: 3419bda943b11d3488a1ab62f31fdc11, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -64,8 +64,8 @@ namespace ShopGame.Presenters
         {
             EventBus<OnSuccessfulPurchase>.Deregister(purchaseBinding);
             inputActions.Player.Invetory.performed -= OnInventoryOpened;
-            model.OnItemUpdated += OnItemUpdated;
-            view.OnItemAmountChanged += OnPurchase;
+            model.OnItemUpdated -= OnItemUpdated;
+            view.OnItemAmountChanged -= OnPurchase;
         }
 
         private void OnSuccesfullyPurchased(OnSuccessfulPurchase @event)

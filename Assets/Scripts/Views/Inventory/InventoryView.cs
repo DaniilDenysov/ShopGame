@@ -1,10 +1,10 @@
 using ShopGame.Managers;
 using ShopGame.Presenters.Inventory;
 using ShopGame.ScriptableObjects.Inventory;
+using ShopGame.UIScreens;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 namespace ShopGame.Views.Inventory
 {
@@ -17,25 +17,15 @@ namespace ShopGame.Views.Inventory
         public void Close();
     }
 
-    public abstract class InventoryView<T> : MonoBehaviour, IInventoryView<T>, IUIState where T : InventoryItemSO
+    public abstract class InventoryView<T> : UIScreen, IInventoryView<T> where T : InventoryItemSO
     {
-        [SerializeField] protected UITweener tweener;
         [SerializeField] protected RectTransform container;
         [SerializeField] protected InventoryItemView inventoryItemViewPrefab;
         public event Action<T, uint> OnItemAmountChanged;
 
         //in this case I prefer dictionary and manual update over event as it will speed up look-up time and thus will be more efficient
         protected Dictionary<T, InventoryItemView> itemViews = new Dictionary<T, InventoryItemView>();
-        protected InputStateManager inputStateManager;
-        protected UIStateManager stateManager;
 
-
-        [Inject]
-        private void Construct(UIStateManager stateManager, InputStateManager inputStateManager)
-        {
-            this.stateManager = stateManager;
-            this.inputStateManager = inputStateManager;
-        }
 
         public virtual void Initialize(IReadOnlyDictionary<T, uint> items)
         {
@@ -43,6 +33,18 @@ namespace ShopGame.Views.Inventory
             {
                 UpdateItem(item.Key, item.Value);
             }
+        }
+
+        public override void Enter()
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            InputActions.Player.Disable();
+        }
+
+        public override void Exit()
+        {
+            InputActions.Player.Enable();
         }
 
         public virtual void UpdateItem(T itemSO, uint amount)
@@ -101,16 +103,10 @@ namespace ShopGame.Views.Inventory
             stateManager.ExitState(this);
         }
 
-        public virtual void OnEnter()
+        public override void OnEnter()
         {
-            inputStateManager.ChangeState(new InventoryState());
-            tweener.SetActive(true);
-        }
-
-        public virtual void OnExit()
-        {
-            inputStateManager.ChangeState(new DefaultState());
-            tweener.SetActive(false);
+            inputStateManager.ChangeState(this);
+            base.OnEnter();
         }
     }
 }
